@@ -15,7 +15,7 @@ val MyCustomFontFamily = FontFamily(
 val AppTypography = Typography(
     headlineLarge = TextStyle(
         fontFamily = MyCustomFontFamily,
-        fontWeight = FontWeight.Normal, // Или FontWeight.Normal, если шрифт только один
+        fontWeight = FontWeight.Normal,
         fontSize = 32.sp,
         lineHeight = 40.sp,
         letterSpacing = 0.5.sp
@@ -28,7 +28,7 @@ val AppTypography = Typography(
         letterSpacing = 0.5.sp
     ),
 
-    // Основной текст (для описания приложения)
+    // Основной текст
     bodyLarge = TextStyle(
         fontFamily = MyCustomFontFamily,
         fontWeight = FontWeight.Normal,
@@ -44,7 +44,7 @@ val AppTypography = Typography(
         letterSpacing = 0.5.sp
     ),
 
-    // Кнопки и мелкие надписи (на всякий случай)
+    // Кнопки и мелкие надписи
     labelLarge = TextStyle(
         fontFamily = MyCustomFontFamily,
         fontWeight = FontWeight.Medium,
