@@ -2,17 +2,54 @@ package com.example.forever.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.forever.R
 
 // Set of Material typography styles to start with
-val Typography = Typography(
+val MyCustomFontFamily = FontFamily(
+    Font(R.font.marmelad_regular, FontWeight.Normal)
+)
+val AppTypography = Typography(
+    headlineLarge = TextStyle(
+        fontFamily = MyCustomFontFamily,
+        fontWeight = FontWeight.Normal, // Или FontWeight.Normal, если шрифт только один
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        letterSpacing = 0.5.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = MyCustomFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+        lineHeight = 36.sp,
+        letterSpacing = 0.5.sp
+    ),
+
+    // Основной текст (для описания приложения)
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = MyCustomFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = MyCustomFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.5.sp
+    ),
+
+    // Кнопки и мелкие надписи (на всякий случай)
+    labelLarge = TextStyle(
+        fontFamily = MyCustomFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.5.sp
     )
     /* Other default text styles to override
