@@ -3,45 +3,40 @@ package com.example.forever
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.forever.presentation.ui.screens.NameInputScreen
+import com.example.forever.presentation.ui.screens.Screen
+import com.example.forever.presentation.ui.screens.WelcomeScreen
+import com.example.forever.presentation.viewmodel.MainViewModel
 import com.example.forever.ui.theme.ForeverTheme
-
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
+            val viewModel: MainViewModel = viewModel()
+
+            val currentScreen by viewModel.currentScreen.collectAsState()
+            val userName by viewModel.userName.collectAsState()
+
             ForeverTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Username",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    when (currentScreen) {
+                        Screen.Welcome -> WelcomeScreen(
+                            onStartClick = viewModel::onStartClicked
+                        )
+                        Screen.NameInput -> NameInputScreen(
+                            onNameSaved = viewModel::onNameSaved
+                        )
+                        Screen.Home -> Text("Экран Home в разработке")
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ForeverTheme {
-        Greeting("Android")
     }
 }
