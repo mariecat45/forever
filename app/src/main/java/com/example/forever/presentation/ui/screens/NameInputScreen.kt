@@ -1,6 +1,8 @@
 package com.example.forever.presentation.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -8,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.forever.R
@@ -41,27 +44,35 @@ fun NameInputScreen(
                 onValueChange = { name = it },
                 label = { Text("Твоё имя") },
                 modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorResource(id = R.color.pink_heart),
-                    unfocusedBorderColor = Color.Gray
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
+                ),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF2F0F1),
+                    unfocusedContainerColor = Color(0xFFF2F0F1),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent
                 )
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(36.dp))
 
-            Button(
-                onClick = {
-                    if (name.isNotBlank()) {
+            Text(
+                text = "Готово!",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .clickable(enabled = name.isNotBlank()) {
                         onNameSaved(name)
                     }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.pink_heart)
-                )
-            ) {
-                Text("Сохранить", color = Color.Black)
-            }
+                    .padding(8.dp)
+            )
         }
     }
 }
