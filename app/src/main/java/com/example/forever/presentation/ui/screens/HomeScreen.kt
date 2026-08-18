@@ -133,7 +133,7 @@ fun HomeScreen(
             // Заголовок списка
             Text(
                 text = "Все комплименты:",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 color = Color(0xFF3E2A32)
             )
 
