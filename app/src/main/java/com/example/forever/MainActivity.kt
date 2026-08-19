@@ -15,11 +15,14 @@ import com.example.forever.ui.theme.ForeverTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.example.forever.presentation.ui.screens.HomeScreen
+import org.koin.androidx.compose.koinViewModel
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel: MainViewModel = viewModel()
+            val viewModel: MainViewModel = koinViewModel()
 
             val currentScreen by viewModel.currentScreen.collectAsState()
             val userName by viewModel.userName.collectAsState()
@@ -33,7 +36,9 @@ class MainActivity : ComponentActivity() {
                         Screen.NameInput -> NameInputScreen(
                             onNameSaved = viewModel::onNameSaved
                         )
-                        Screen.Home -> Text("Экран Home в разработке")
+                        Screen.Home -> HomeScreen(
+                            viewModel = viewModel
+                        )
                     }
                 }
             }
