@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Surface
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import com.example.forever.presentation.ui.screens.NameInputScreen
@@ -16,10 +17,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.example.forever.presentation.ui.screens.HomeScreen
+import com.example.forever.presentation.ui.screens.LoadingScreen
+import com.example.forever.presentation.ui.screens.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             val viewModel: MainViewModel = koinViewModel()
@@ -30,6 +34,7 @@ class MainActivity : ComponentActivity() {
             ForeverTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     when (currentScreen) {
+                        Screen.Loading -> LoadingScreen()
                         Screen.Welcome -> WelcomeScreen(
                             onStartClick = viewModel::onStartClicked
                         )
@@ -38,6 +43,10 @@ class MainActivity : ComponentActivity() {
                         )
                         Screen.Home -> HomeScreen(
                             viewModel = viewModel
+                        )
+                        Screen.Settings -> SettingsScreen(
+                            viewModel = viewModel,
+                            onBackClick = { /* Navigate back */ }
                         )
                     }
                 }

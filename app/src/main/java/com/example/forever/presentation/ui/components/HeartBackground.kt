@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.WindowInsets
 import com.example.forever.R
 
 @Composable
@@ -22,7 +23,8 @@ fun HeartBackground(
 ) {
     Surface(
         modifier = modifier.then(Modifier.fillMaxSize()),
-        color = colorResource(id = R.color.pink_background)
+        color = colorResource(id = R.color.pink_background),
+        contentWindowInsets = WindowInsets(0)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             // Большое сердце справа

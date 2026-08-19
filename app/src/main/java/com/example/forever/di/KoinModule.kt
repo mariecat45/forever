@@ -1,6 +1,7 @@
 package com.example.forever.di
 
 import com.example.forever.data.repository.NoteRepositoryImpl
+import com.example.forever.data.repository.UserPreferencesRepository
 import com.example.forever.domain.repository.NoteRepository
 import com.example.forever.presentation.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidContext
@@ -30,6 +31,13 @@ val koinModule = module {
         )
     }
 
-    // 4. VIEWMODEL
-    viewModel { MainViewModel(repository = get()) }
+    // 4. РЕПОЗИТОРИЙ НАСТРОЕК
+    single { UserPreferencesRepository(androidContext()) }
+
+    // 5. VIEWMODEL
+    viewModel { MainViewModel(
+            repository = get(),
+            userPreferencesRepository = get()
+        )
+    }
 }
