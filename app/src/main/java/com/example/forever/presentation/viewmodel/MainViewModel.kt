@@ -2,6 +2,7 @@ package com.example.forever.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.forever.data.repository.UserPreferencesRepository
 import com.example.forever.data.source.local.AttachmentEntity
 import com.example.forever.data.source.local.NoteEntity
 import com.example.forever.presentation.ui.screens.Screen
@@ -12,10 +13,11 @@ import com.example.forever.domain.repository.NoteRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val repository: NoteRepository // ← ВОТ ЭТО ДОБАВИЛИ! Koin сам подставит сюда репозиторий
+    private val repository: NoteRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
 
-    private val _currentScreen = MutableStateFlow<Screen>(Screen.Welcome)
+    private val _currentScreen = MutableStateFlow<Screen>(Screen.Loading)
     val currentScreen: StateFlow<Screen> = _currentScreen.asStateFlow()
 
     private val _userName = MutableStateFlow("")
@@ -34,7 +36,25 @@ class MainViewModel(
 
     // При создании ViewModel загружаем все заметки
     init {
+        checkOnboardingStatus() // ← ДОБАВИТЬ
+        loadUserName()
         loadNotes()
+    }
+
+    private fun checkOnboardingStatus() {
+        viewModelScope.launch {
+            userPreferencesRepository.isOnboardingCompleted.collect { completed ->
+                _currentScreen.value = if (completed) Screen.Home else Screen.Welcome
+            }
+        }
+    }
+
+    private fun loadUserName() {
+        viewModelScope.launch {
+            userPreferencesRepository.userName.collect { name ->
+                _userName.value = name
+            }
+        }
     }
 
     // НАВИГАЦИЯ
@@ -43,7 +63,31 @@ class MainViewModel(
     }
 
     fun onNameSaved(name: String) {
-        _userName.value = name
+        viewModelScope.launch {
+            userPreferencesRepository.setUserName(name)           // ← ДОБАВИТЬ
+            userPreferencesRepository.setOnboardingCompleted(true) // ← ДОБАВИТЬ
+            _userName.value = name
+            _currentScreen.value = Screen.Home
+        }
+    }
+
+    // Изменить имя (для экрана настроек)
+    fun updateUserName(newName: String) {
+        viewModelScope.launch {
+            userPreferencesRepository.setUserName(newName)
+            _userName.value = newName
+        }
+    }
+
+    fun onSettingsClicked() {
+        _currentScreen.value = Screen.Settings
+    }
+
+    fun onNoteClicked(noteId: Long) {
+        _currentScreen.value = Screen.NoteDetail(noteId)
+    }
+
+    fun onBackToHome() {
         _currentScreen.value = Screen.Home
     }
 

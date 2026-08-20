@@ -39,4 +39,6 @@ class NoteRepositoryImpl(
     override suspend fun deleteAttachment(attachmentId: Long) {
         attachmentDao.deleteAttachment(attachmentId)
     }
+
+    override suspend fun getRandomNote(): NoteEntity? = noteDao.getRandomNote()
 }

@@ -22,7 +22,7 @@ fun HeartBackground(
 ) {
     Surface(
         modifier = modifier.then(Modifier.fillMaxSize()),
-        color = colorResource(id = R.color.pink_background)
+        color = colorResource(id = R.color.pink_background),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             // Большое сердце справа

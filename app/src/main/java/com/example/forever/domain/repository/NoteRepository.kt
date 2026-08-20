@@ -12,4 +12,6 @@ interface NoteRepository {
     fun getAttachmentsForNote(noteId: Long): Flow<List<AttachmentEntity>>
     suspend fun insertAttachment(attachment: AttachmentEntity)
     suspend fun deleteAttachment(attachmentId: Long)
+
+    suspend fun getRandomNote(): NoteEntity?
 }

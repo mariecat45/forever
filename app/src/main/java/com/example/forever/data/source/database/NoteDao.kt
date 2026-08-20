@@ -25,4 +25,7 @@ interface NoteDao {
     // Удалить заметку
     @Query("DELETE FROM notes WHERE id = :noteId")
     suspend fun deleteNote(noteId: Long)
+
+    @Query("SELECT * FROM notes ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomNote(): NoteEntity?
 }
