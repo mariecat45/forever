@@ -79,6 +79,18 @@ class MainViewModel(
         }
     }
 
+    fun onSettingsClicked() {
+        _currentScreen.value = Screen.Settings
+    }
+
+    fun onNoteClicked(noteId: Long) {
+        _currentScreen.value = Screen.NoteDetail(noteId)
+    }
+
+    fun onBackToHome() {
+        _currentScreen.value = Screen.Home
+    }
+
     // РАБОТА С ЗАМЕТКАМИ
 
     private fun loadNotes() {

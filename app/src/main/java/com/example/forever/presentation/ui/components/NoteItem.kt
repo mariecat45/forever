@@ -15,11 +15,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun NoteItem(
     text: String,
+    onClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
+        onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(

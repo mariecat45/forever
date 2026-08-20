@@ -6,4 +6,5 @@ sealed class Screen {
     object NameInput : Screen()
     object Home : Screen()
     object Settings : Screen()
+    data class NoteDetail(val noteId: Long) : Screen()
 }
