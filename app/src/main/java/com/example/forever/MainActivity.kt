@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                         )
                         Screen.Settings -> SettingsScreen(
                             viewModel = viewModel,
-                            onBackClick = { /* Navigate back */ }
+                            onBackClick = viewModel::onBackToHome
                         )
                         is Screen.NoteDetail -> NoteDetailScreen(
                             viewModel = viewModel,

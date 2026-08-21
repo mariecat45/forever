@@ -11,8 +11,8 @@ class MyApplication : Application() {
 
         // Запускаем Koin
         startKoin {
-            androidContext(this@MyApplication) // Передаем контекст приложения
-            modules(koinModule) // Подключаем наш файл с "рецептами"
+            androidContext(this@MyApplication)
+            modules(koinModule)
         }
     }
 }
