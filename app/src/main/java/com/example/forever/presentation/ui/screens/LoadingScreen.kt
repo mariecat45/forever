@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.forever.R
 import com.example.forever.presentation.ui.components.HeartBackground
+import com.example.forever.presentation.ui.components.HeartProgressIndicator
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
@@ -38,13 +39,11 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Индикатор загрузки
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .width(200.dp)
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp)),
+                HeartProgressIndicator(
+                    modifier = Modifier.size(72.dp),
                     color = colorResource(id = R.color.pink_heart),
-                    trackColor = colorResource(id = R.color.pink_background)
+                    trackColor = colorResource(id = R.color.pink_heart).copy(alpha = 0.25f),
+                    strokeWidth = 5.dp
                 )
             }
         }
