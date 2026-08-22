@@ -239,10 +239,17 @@ fun HomeScreen(
         }
         SnackbarHost(
             hostState = snackbarHostState,
+
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
                 .padding(8.dp)
-        )
+        ){ data ->
+            Snackbar(
+                snackbarData = data,
+                actionColor = colorResource(id = R.color.pink_heart),     // цвет кнопки "Вернуть"
+                shape = RoundedCornerShape(12.dp)                  // скругление, как у карточек
+            )
+        }
     }
 }

@@ -1,46 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/widgetRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_background">
+    android:background="@drawable/widget_background"
+    android:clipToOutline="true" >
 
-    <!-- Сердечко сверху по центру (частично "выглядывает") -->
+    <!-- Сердечко сверху по центру -->
     <ImageView
+        android:id="@+id/heartTop"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="-30dp"
-        android:alpha="0.5"
+        android:layout_marginStart="60dp"
         android:src="@drawable/ic_heart"
-        android:importantForAccessibility="no"
-        app:tint="@color/pink_heart" />
+        android:importantForAccessibility="no" />
 
     <!-- Большое сердце слева -->
     <ImageView
+        android:id="@+id/heartLeft"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_gravity="center_vertical|start"
         android:layout_marginStart="-40dp"
-        android:alpha="0.5"
         android:src="@drawable/ic_heart"
-        android:importantForAccessibility="no"
-        app:tint="@color/pink_heart" />
+        android:importantForAccessibility="no" />
 
     <!-- Сердечко справа снизу -->
     <ImageView
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:id="@+id/heartRight"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="-20dp"
         android:layout_marginBottom="-20dp"
-        android:alpha="0.5"
         android:src="@drawable/ic_heart"
-        android:importantForAccessibility="no"
-        app:tint="@color/pink_heart" />
+        android:importantForAccessibility="no" />
 
-    <!-- Текст комплимента по центру -->
+    <!-- Текст комплимента -->
     <TextView
         android:id="@+id/widgetText"
         android:layout_width="match_parent"
