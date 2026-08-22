@@ -160,8 +160,8 @@ fun HomeScreen(
                             minLines = 4,
                             shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedContainerColor = Color(0xFFF6E7EC),
-                                focusedContainerColor = Color(0xFFF6E7EC),
+                                unfocusedContainerColor = Color(0xFFFFFFFF),
+                                focusedContainerColor = Color(0xFFFFFFFF),
                                 unfocusedBorderColor = Color.Transparent,
                                 focusedBorderColor = Color(0xFFD9A5B3),
                                 unfocusedPlaceholderColor = Color(0xFFB98A96),
