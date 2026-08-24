@@ -2,19 +2,29 @@ package com.example.forever.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.forever.data.repository.UserPreferencesRepository
-import com.example.forever.data.source.local.AttachmentEntity
-import com.example.forever.data.source.local.NoteEntity
+import com.example.forever.domain.model.Attachment
+import com.example.forever.domain.model.Note
 import com.example.forever.presentation.ui.screens.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.example.forever.domain.repository.NoteRepository
+import com.example.forever.domain.usecase.AddNoteUseCase
 import kotlinx.coroutines.launch
+import com.example.forever.domain.usecase.*
 
 class MainViewModel(
-    private val repository: NoteRepository,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val getAllNotesUseCase: GetAllNotesUseCase,
+    private val addNoteUseCase: AddNoteUseCase,
+    private val updateNoteUseCase: UpdateNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val getAttachmentsUseCase: GetAttachmentsForNoteUseCase,
+    private val addAttachmentUseCase: AddAttachmentUseCase,
+    private val deleteAttachmentUseCase: DeleteAttachmentUseCase,
+    private val observeOnboardingUseCase: ObserveOnboardingUseCase,
+    private val completeOnboardingUseCase: CompleteOnboardingUseCase,
+    private val observeUserNameUseCase: ObserveUserNameUseCase,
+    private val saveUserNameUseCase: SaveUserNameUseCase,
+    private val restoreNoteUseCase: RestoreNoteUseCase
 ) : ViewModel() {
 
     private val _currentScreen = MutableStateFlow<Screen>(Screen.Loading)
@@ -23,27 +33,24 @@ class MainViewModel(
     private val _userName = MutableStateFlow("")
     val userName: StateFlow<String> = _userName.asStateFlow()
 
-    // Данные заметок
-    private val _notes = MutableStateFlow<List<NoteEntity>>(emptyList())
-    val notes: StateFlow<List<NoteEntity>> = _notes.asStateFlow()
+    private val _notes = MutableStateFlow<List<Note>>(emptyList())
+    val notes: StateFlow<List<Note>> = _notes.asStateFlow()
 
-    private val _currentAttachments = MutableStateFlow<List<AttachmentEntity>>(emptyList())
-    val currentAttachments: StateFlow<List<AttachmentEntity>> = _currentAttachments.asStateFlow()
+    private val _currentAttachments = MutableStateFlow<List<Attachment>>(emptyList())
+    val currentAttachments: StateFlow<List<Attachment>> = _currentAttachments.asStateFlow()
 
-    // Состояние загрузки
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    // При создании ViewModel загружаем все заметки
     init {
-        checkOnboardingStatus() // ← ДОБАВИТЬ
+        checkOnboardingStatus()
         loadUserName()
         loadNotes()
     }
 
     private fun checkOnboardingStatus() {
         viewModelScope.launch {
-            userPreferencesRepository.isOnboardingCompleted.collect { completed ->
+            observeOnboardingUseCase().collect { completed ->
                 _currentScreen.value = if (completed) Screen.Home else Screen.Welcome
             }
         }
@@ -51,7 +58,7 @@ class MainViewModel(
 
     private fun loadUserName() {
         viewModelScope.launch {
-            userPreferencesRepository.userName.collect { name ->
+            observeUserNameUseCase().collect { name ->
                 _userName.value = name
             }
         }
@@ -64,17 +71,15 @@ class MainViewModel(
 
     fun onNameSaved(name: String) {
         viewModelScope.launch {
-            userPreferencesRepository.setUserName(name)           // ← ДОБАВИТЬ
-            userPreferencesRepository.setOnboardingCompleted(true) // ← ДОБАВИТЬ
+            completeOnboardingUseCase(name)
             _userName.value = name
             _currentScreen.value = Screen.Home
         }
     }
 
-    // Изменить имя (для экрана настроек)
     fun updateUserName(newName: String) {
         viewModelScope.launch {
-            userPreferencesRepository.setUserName(newName)
+            saveUserNameUseCase(newName)
             _userName.value = newName
         }
     }
@@ -92,11 +97,10 @@ class MainViewModel(
     }
 
     // РАБОТА С ЗАМЕТКАМИ
-
     private fun loadNotes() {
         viewModelScope.launch {
             _isLoading.value = true
-            repository.getAllNotes().collect { notesList ->
+            getAllNotesUseCase().collect { notesList ->
                 _notes.value = notesList
                 _isLoading.value = false
             }
@@ -105,37 +109,30 @@ class MainViewModel(
 
     fun addNote(text: String) {
         viewModelScope.launch {
-            val note = NoteEntity(
-                ownerId = _userName.value, // Привязываем к текущему пользователю
-                text = text,
-                createdAt = System.currentTimeMillis(),
-                updatedAt = null
-            )
-            repository.insertNote(note)
+            addNoteUseCase(text, _userName.value)
         }
     }
 
     fun deleteNote(noteId: Long) {
         viewModelScope.launch {
-            repository.deleteNote(noteId) // CASCADE сам удалит вложения!
+            deleteNoteUseCase(noteId)
         }
     }
 
-    fun updateNote(note: NoteEntity, newText: String) {
+    fun updateNote(note: Note, newText: String) {
         viewModelScope.launch {
             val updatedNote = note.copy(
                 text = newText,
                 updatedAt = System.currentTimeMillis()
             )
-            repository.updateNote(updatedNote)
+            updateNoteUseCase(updatedNote)
         }
     }
 
     // РАБОТА С ВЛОЖЕНИЯМИ
-
     fun loadAttachmentsForNote(noteId: Long) {
         viewModelScope.launch {
-            repository.getAttachmentsForNote(noteId).collect { attachments ->
+            getAttachmentsUseCase(noteId).collect { attachments ->
                 _currentAttachments.value = attachments
             }
         }
@@ -143,19 +140,25 @@ class MainViewModel(
 
     fun addAttachment(noteId: Long, filePath: String, fileName: String, fileType: String = "IMAGE") {
         viewModelScope.launch {
-            val attachment = AttachmentEntity(
+            val attachment = Attachment(
                 noteId = noteId,
                 filePath = filePath,
                 fileName = fileName,
                 fileType = fileType
             )
-            repository.insertAttachment(attachment)
+            addAttachmentUseCase(attachment)
         }
     }
 
     fun deleteAttachment(attachmentId: Long) {
         viewModelScope.launch {
-            repository.deleteAttachment(attachmentId)
+            deleteAttachmentUseCase(attachmentId)
+        }
+    }
+
+    fun restoreNote(note: Note) {
+        viewModelScope.launch {
+            restoreNoteUseCase(note)  // ← Теперь просто делегируем
         }
     }
 }

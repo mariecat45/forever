@@ -1,5 +1,6 @@
 package com.example.forever.presentation.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -9,7 +10,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.forever.R
 import com.example.forever.presentation.ui.components.HeartBackground
@@ -73,18 +77,19 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = {
-                    viewModel.updateUserName(editingName)
-                    onBackClick()
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.pink_heart)
-                )
-            ) {
-                Text("Сохранить")
-            }
+            Text(
+                text = "Сохранить",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .clickable {
+                        viewModel.updateUserName(editingName)
+                        onBackClick()
+                    }
+                    .padding(8.dp),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

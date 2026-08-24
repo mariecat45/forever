@@ -1,7 +1,9 @@
 package com.example.forever.presentation.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -39,6 +41,7 @@ fun NoteDetailScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
                 .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             // Шапка: назад + дата + галочка сохранения
             Row(
@@ -55,7 +58,7 @@ fun NoteDetailScreen(
 
                 Text(
                     text = "Запись от ${note?.let { formatNoteDate(it.createdAt) } ?: "..."}",
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Medium,
                     color = colorResource(id = R.color.text_color),
                     modifier = Modifier.weight(1f)
@@ -69,7 +72,7 @@ fun NoteDetailScreen(
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = "Сохранить",
-                        tint = colorResource(id = R.color.pink_heart)
+                        tint = colorResource(id = R.color.text_color)
                     )
                 }
             }
@@ -79,8 +82,7 @@ fun NoteDetailScreen(
             // Карточка с редактируемым текстом
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                    .fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = colorResource(id = R.color.white)
@@ -90,7 +92,11 @@ fun NoteDetailScreen(
                 TextField(
                     value = text,
                     onValueChange = { text = it },
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .heightIn(min = 120.dp)
+                        .padding(16.dp),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
@@ -100,6 +106,8 @@ fun NoteDetailScreen(
                     textStyle = MaterialTheme.typography.bodyLarge
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
