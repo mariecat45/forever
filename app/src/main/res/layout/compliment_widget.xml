@@ -48,5 +48,9 @@
         android:padding="20dp"
         android:text="Загрузка..."
         android:textColor="@color/text_color"
-        android:textSize="18sp" />
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="18sp" />
 </FrameLayout>

@@ -1,4 +1,4 @@
-package com.example.forever.presentation
+package com.example.forever.presentation.widgets
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
