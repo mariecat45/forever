@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="250dp"
+    android:height="120dp"
+    android:viewportWidth="250"
+    android:viewportHeight="120">
+
+    <!-- Скруглённый розовый фон -->
+    <path
+        android:fillColor="@color/pink_background"
+        android:pathData="M16,0 L234,0 Q250,0 250,16 L250,104 Q250,120 234,120 L16,120 Q0,120 0,104 L0,16 Q0,0 16,0 Z" />
+
+    <!-- Сердечко слева -->
+    <group
+        android:translateX="-10"
+        android:translateY="30"
+        android:scaleX="0.8"
+        android:scaleY="0.8">
+        <path
+            android:fillColor="@color/pink_heart"
+            android:fillAlpha="0.5"
+            android:pathData="M50,92 C20,66 4,46 4,28 C4,12 16,4 28,4 C38,4 46,10 50,20 C54,10 62,4 72,4 C84,4 96,12 96,28 C96,46 80,66 50,92" />
+    </group>
+
+    <!-- Сердечко справа сверху -->
+    <group
+        android:translateX="180"
+        android:translateY="-20"
+        android:scaleX="0.6"
+        android:scaleY="0.6">
+        <path
+            android:fillColor="@color/pink_heart"
+            android:fillAlpha="0.5"
+            android:pathData="M50,92 C20,66 4,46 4,28 C4,12 16,4 28,4 C38,4 46,10 50,20 C54,10 62,4 72,4 C84,4 96,12 96,28 C96,46 80,66 50,92" />
+    </group>
+</vector>

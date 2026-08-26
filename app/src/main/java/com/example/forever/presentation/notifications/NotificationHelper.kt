@@ -30,7 +30,7 @@ object NotificationHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Комплименты",
+                "Послания",
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply { description = "Послания для настроения 💗" }
             context.getSystemService(NotificationManager::class.java)
